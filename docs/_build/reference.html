@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Reference &#8212; semester6  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=12dfc556" />
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="License" href="license.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="reference">
+<h1>Reference<a class="headerlink" href="#reference" title="Link to this heading">¶</a></h1>
+<nav class="contents local" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#module-semester6.shcherbak_hw2_GHT" id="id1">semester6.shcherbak_hw2_GHT</a></p></li>
+<li><p><a class="reference internal" href="#module-semester6.console" id="id2">semester6.console</a></p></li>
+<li><p><a class="reference internal" href="#module-semester6.wikipedia" id="id3">semester6.wikipedia</a></p></li>
+</ul>
+</nav>
+<section id="module-semester6.shcherbak_hw2_GHT">
+<span id="semester6-shcherbak-hw2-ght"></span><h2>semester6.shcherbak_hw2_GHT<a class="headerlink" href="#module-semester6.shcherbak_hw2_GHT" title="Link to this heading">¶</a></h2>
+<p>General Hough Transform.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="semester6.shcherbak_hw2_GHT.build_accumulator">
+<span class="sig-prename descclassname"><span class="pre">semester6.shcherbak_hw2_GHT.</span></span><span class="sig-name descname"><span class="pre">build_accumulator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r_table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query_image</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#semester6.shcherbak_hw2_GHT.build_accumulator" title="Link to this definition">¶</a></dt>
+<dd><p>Builds the accumulator array for a given image using the R-table.</p>
+<p>Given R-table for a reference image, creates accumulator for another image.
+Both images should be grayscale. Also, creates accumulator that is used for plotting. Its elements
+are sums along the dimension corresponding to angles in the main accumulator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>r_table</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">defaultdict</span></code></span>) – R-table for the reference shape that we search for</p></li>
+<li><p><strong>query_image</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span>) – Image that presumably contains reference shape</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Tuple of the main accumulator (used for finding the most probable locations)
+and accumulator used for plotting.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="semester6.shcherbak_hw2_GHT.build_r_table">
+<span class="sig-prename descclassname"><span class="pre">semester6.shcherbak_hw2_GHT.</span></span><span class="sig-name descname"><span class="pre">build_r_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reference_image</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#semester6.shcherbak_hw2_GHT.build_r_table" title="Link to this definition">¶</a></dt>
+<dd><p>Builds the R-table from the given image.</p>
+<p>Given image, builds R-table, which is a defaultdict with angles as keys and vectors to origin
+of the image (center point by default) as values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>reference_image</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span>) – Reference shape to be found on images</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">defaultdict</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="semester6.shcherbak_hw2_GHT.edges_gradient">
+<span class="sig-prename descclassname"><span class="pre">semester6.shcherbak_hw2_GHT.</span></span><span class="sig-name descname"><span class="pre">edges_gradient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#semester6.shcherbak_hw2_GHT.edges_gradient" title="Link to this definition">¶</a></dt>
+<dd><p>Calculates edges and gradient orientations for the image.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>image</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span>) – Image, represented by 2D array</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="semester6.shcherbak_hw2_GHT.general_hough">
+<span class="sig-prename descclassname"><span class="pre">semester6.shcherbak_hw2_GHT.</span></span><span class="sig-name descname"><span class="pre">general_hough</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reference_image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query_image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path_for_saving</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#semester6.shcherbak_hw2_GHT.general_hough" title="Link to this definition">¶</a></dt>
+<dd><p>Performs General Hough Transform.</p>
+<p>For any reference image and any query image, performs transform, marks locations and directions of
+the reference image on the query image, and saves results.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>reference_image</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span>) – The image containing a shape that is to be found on another image.</p></li>
+<li><p><strong>query_image</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span>) – The image that presumably contains that shape.</p></li>
+<li><p><strong>path_for_saving</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – The path to the image that will contain results. By default, main method
+passes</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="semester6.shcherbak_hw2_GHT.n_max_ind">
+<span class="sig-prename descclassname"><span class="pre">semester6.shcherbak_hw2_GHT.</span></span><span class="sig-name descname"><span class="pre">n_max_ind</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#semester6.shcherbak_hw2_GHT.n_max_ind" title="Link to this definition">¶</a></dt>
+<dd><p>Returns indices of n maximum values in an N-dimensional array</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>array</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span>) – Array</p></li>
+<li><p><strong>n</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – Number of elements to returns. They are sorted in descending order.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Indices of n max elements.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-semester6.console">
+<span id="semester6-console"></span><h2>semester6.console<a class="headerlink" href="#module-semester6.console" title="Link to this heading">¶</a></h2>
+<p>Sample file to test click.</p>
+</section>
+<section id="module-semester6.wikipedia">
+<span id="semester6-wikipedia"></span><h2>semester6.wikipedia<a class="headerlink" href="#module-semester6.wikipedia" title="Link to this heading">¶</a></h2>
+<p>Retrieving random page from Wikipedia</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="semester6.wikipedia.Page">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">semester6.wikipedia.</span></span><span class="sig-name descname"><span class="pre">Page</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extract</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#semester6.wikipedia.Page" title="Link to this definition">¶</a></dt>
+<dd><p>Page resource.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="semester6.wikipedia.Page.title">
+<span class="sig-name descname"><span class="pre">title</span></span><a class="headerlink" href="#semester6.wikipedia.Page.title" title="Link to this definition">¶</a></dt>
+<dd><p>The title of the Wikipedia page.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="semester6.wikipedia.Page.extract">
+<span class="sig-name descname"><span class="pre">extract</span></span><a class="headerlink" href="#semester6.wikipedia.Page.extract" title="Link to this definition">¶</a></dt>
+<dd><p>A plain text summary.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="semester6.wikipedia.random_page">
+<span class="sig-prename descclassname"><span class="pre">semester6.wikipedia.</span></span><span class="sig-name descname"><span class="pre">random_page</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">language</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'en'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#semester6.wikipedia.random_page" title="Link to this definition">¶</a></dt>
+<dd><p>Return a random page.</p>
+<p>Performs a GET request to the /page/random/summary endpoint.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>language</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – The Wikipedia language edition. By default, the English
+Wikipedia is used (“en”).</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#semester6.wikipedia.Page" title="semester6.wikipedia.Page"><code class="xref py py-class docutils literal notranslate"><span class="pre">Page</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A page resource.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ClickException</strong> – The HTTP request failed or the HTTP response
+    contained an invalid body.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">semester6</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="license.html" title="previous chapter">License</a></li>
+  </ul></li>
+</ul>
+</div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, Nikita Shcherbak.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.3.7</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+      |
+      <a href="_sources/reference.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

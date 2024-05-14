@@ -12,6 +12,7 @@ from semester6 import console
 
 @pytest.fixture
 def mock_wikipedia_random_page(mocker: MockFixture) -> Mock:
+    """Mocker object to patch random_page."""
     return mocker.patch("semester6.wikipedia.random_page")
 
 

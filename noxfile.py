@@ -1,6 +1,7 @@
 """Handles test sessions."""
 
 import tempfile
+from typing import Any
 
 import nox
 from nox.sessions import Session
@@ -112,7 +113,7 @@ def docs(session: Session) -> None:
     session.run("poetry", "run", "sphinx-build", "docs", "docs/_build")
 
 
-def install_with_constraints(session: Session, *args: str, **kwargs: any) -> None:
+def install_with_constraints(session: Session, *args: str, **kwargs: Any) -> None:
     """Install packages constrained by lock file."""
     with tempfile.NamedTemporaryFile() as requirements:
         session.run(

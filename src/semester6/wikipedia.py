@@ -1,4 +1,4 @@
-"""Retrieving random page from Wikipedia"""
+"""Retrieving random page from Wikipedia."""
 
 from dataclasses import dataclass
 

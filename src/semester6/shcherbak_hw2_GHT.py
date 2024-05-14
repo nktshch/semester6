@@ -13,8 +13,7 @@ from skimage.io import imread
 
 from . import __version__
 
-THETA_NUMBERS: int = 60  # MUST BE LESS OR EQUAL THAN 360
-THRESHOLD: float = 0.1
+THETA_NUMBERS = None
 
 
 def edges_gradient(image: np.ndarray) -> tuple:
@@ -135,9 +134,8 @@ def n_max_ind(array: np.ndarray, n: int) -> np.ndarray:
     return np.stack(indices, axis=1)
 
 
-def general_hough(
-    reference_image: np.ndarray, query_image: np.ndarray, path_for_saving: str
-) -> None:
+def general_hough(reference_image: np.ndarray, query_image: np.ndarray, path_for_saving: str,
+                  threshold: float, is_line: bool) -> None:
     """Performs General Hough Transform.
 
     For any reference image and any query image, performs transform, marks locations and directions of
@@ -148,6 +146,10 @@ def general_hough(
         query_image: The image that presumably contains that shape.
         path_for_saving: The path to the image that will contain results. By default, main method
             passes
+        threshold: Controls how many points will be counted as centers. Lower value means more points.
+            For line detection, consider 0.05 - 0.15. For other shapes, 0.85 - 0.95.
+        is_line: Tells whether it is line that the algorithm should find.
+            Flag is used for adjusting plot parameters.
     """
     r_table = build_r_table(reference_image)
     accumulator, accumulator_view = build_accumulator(r_table, query_image)
@@ -172,18 +174,22 @@ def general_hough(
     ax4.set_xticks([])
     ax4.set_yticks([])
 
+    length = 100 if is_line else 10
+    width = 2 if is_line else 0.5
+    head_width = 0 if is_line else 2
+    size = 0 if is_line else 10
+
     max_accum = np.max(accumulator)
     for theta, accum in enumerate(accumulator):
-        greater = np.where(accum > THRESHOLD * max_accum, accum, 0)
+        greater = np.where(accum > threshold * max_accum, accum, 0)
         top = n_max_ind(greater, min(np.count_nonzero(greater), 4))
-        # print(top)
         for v_coord, h_coord in top:
             dx, dy = np.cos(theta * 2 * np.pi / THETA_NUMBERS), np.sin(
                 theta * 2 * np.pi / THETA_NUMBERS
             )
-            kwargs = {"width": 2, "head_width": 0, "color": "y"}
-            ax4.arrow(h_coord, v_coord, 100 * dy, 100 * dx, **kwargs)
-            # ax4.scatter(h_coord, v_coord, marker='o', color='r', s=10)
+            kwargs = {"width": width, "head_width": head_width, "color": "y"}
+            ax4.arrow(h_coord, v_coord, -length * dy, -length * dx, **kwargs)
+            ax4.scatter(h_coord, v_coord, marker='o', color='r', s=size)
 
     plt.tight_layout()
     plt.savefig(path_for_saving)
@@ -201,15 +207,42 @@ def general_hough(
     "--query_path",
     "-q",
     default="./images/line_test5.png",
-    help="Path to image that contains reference shape ",
+    help="Path to image that contains reference shape",
+    show_default=True,
+)
+@click.option(
+    "--angles",
+    "-a",
+    default=60,
+    help="Number of angles to iterate through. Greater value means that more objects will be"
+         "considered matching the shape. Must be less or equal than 360.",
+    show_default=True,
+)
+@click.option(
+    "--threshold",
+    "-t",
+    default=0.1,
+    help="Controls how many points will be counted as centers. Lower value means more points."
+         "For line detection, consider 0.05 - 0.15. For other shapes, 0.85 - 0.95.",
+    show_default=True,
+)
+@click.option(
+    "--is_line",
+    "-l",
+    is_flag=True,
+    default=False,
+    help="Option for showing that the reference image contains line. Used for adjusting the plot.",
     show_default=True,
 )
 @click.version_option(version=__version__)
-def main(reference_path: str, query_path: str) -> None:
+def main(reference_path: str, query_path: str, angles: int, threshold: float, is_line: bool) -> None:
+    """Main function for the general hough transform."""
+    global THETA_NUMBERS
+    THETA_NUMBERS = angles
     reference_image = imread(reference_path, as_gray=True)
     query_image = imread(query_path, as_gray=True)
     f = os.path.splitext(os.path.split(query_path)[1])[0]
-    path_for_saving = os.path.join("./results/" + f)
-    print(path_for_saving)
+    path_for_saving = os.path.join("./results/" + f + ".png")
+    print(f"Image will be saved at {path_for_saving}")
 
-    general_hough(reference_image, query_image, path_for_saving)
+    general_hough(reference_image, query_image, path_for_saving, threshold, is_line)
